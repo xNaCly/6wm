@@ -1,0 +1,38 @@
+; vim: filetype=racket
+; usually at ~/.config/6wm/config.garden
+
+(6wm.mod "mod4") ; set leader key all other binds use
+
+@let term "ghostty"
+@let browser "firefox"
+
+@let bar (
+ (std.time.format (std.time.now) "hh:mm dd.MM") ; 16:20 14.04
+ (+ (std.sys.cmd "pamixer" "--get-volume") "%") ; 50%
+)
+
+@let apps (
+  "dunst"
+  "nitrogen --restore"
+  "picom -b"
+  "playerctld daemon"
+  "xrandr -s 1920x1080 -r 144.0"
+  "spotify"
+  "discord"
+  "flameshot"
+)
+
+@for e bar { (6wm.bar.push e ) }
+@for a apps { (6wm.start a) }
+
+(6wm.bind "Enter" (wm.spawn term))
+(6wm.bind "b" (wm.spawn browser))
+(6wm.bind "h" (wm.focus.left))
+(6wm.bind "l" (wm.focus.right))
+(6wm.bind "H" (wm.shift.left))
+(6wm.bind "L" (wm.shift.right))
+
+@for i (0..9) {
+    (6wm.bind i (wm.focus.workspace i))
+    (6wm.bind "Shift" i (wm.shift.workspace i))
+}
